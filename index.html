@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Haraj Redesign Prototype — IT352 Task 7</title>
+<style>
+:root {
+--primary: #1070ca;
+--primary-dark: #0a5296;
+--bg: #f4f7fb;
+--card: #ffffff;
+--text: #1b2432;
+--muted: #5a687c;
+--border: #dce4ef;
+--success: #15803d;
+--warning: #b45309;
+}
+* { box-sizing: border-box; font-family: "Segoe UI", Tahoma, sans-serif; }
+body { margin: 0; background: var(--bg); color: var(--text); }
+header {
+background: var(--primary); color: #fff; padding: 14px 24px;
+display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;
+}
+.brand { font-size: 20px; font-weight: 700; cursor: pointer; }
+.search-wrap { flex: 1; max-width: 520px; display: flex; gap: 8px; }
+.search-wrap input {
+flex: 1; padding: 10px 14px; border: none; border-radius: 8px; font-size: 14px;
+}
+.btn {
+border: none; border-radius: 8px; padding: 9px 14px; font-weight: 600;
+cursor: pointer; font-size: 13px; transition: 0.15s;
+}
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-light { background: #fff; color: var(--primary); }
+.btn-outline { background: #fff; color: var(--text); border: 1px solid var(--border); }
+.btn-success { background: var(--success); color: #fff; }
+nav.cat-bar {
+background: #fff; border-bottom: 1px solid var(--border);
+padding: 10px 24px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+}
+.cat-btn {
+background: #eef4fc; color: var(--primary-dark); border: 1px solid #cfe0f7;
+padding: 8px 14px; border-radius: 20px; font-weight: 600; cursor: pointer;
+}
+.cat-btn.active { background: var(--primary); color: #fff; }
+.more-panel {
+display: none; background: #fff; border-bottom: 1px solid var(--border);
+padding: 12px 24px; gap: 10px; flex-wrap: wrap;
+}
+.more-panel.open { display: flex; }
+.container { max-width: 1100px; margin: 22px auto; padding: 0 18px; }
+.banner {
+background: #e8f2fe; border: 1px solid #bfd9fa; color: #0f3d6e;
+padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; font-size: 13px;
+}
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.card {
+background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+overflow: hidden; display: flex; flex-direction: column;
+}
+.card-img {
+height: 150px; background: linear-gradient(135deg, #d7e6f9, #eef4fc);
+display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--primary-dark);
+}
+.card-body { padding: 14px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.price { font-size: 17px; font-weight: 700; color: var(--primary); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0; }
+.tag { background: #f0f4f9; padding: 3px 8px; border-radius: 6px; font-size: 12px; color: var(--muted); }
+.brands-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.brand-chip {
+padding: 8px 14px; background: #fff; border: 1px solid var(--border);
+border-radius: 8px; cursor: pointer; font-weight: 600;
+}
+.brand-chip.active { border-color: var(--primary); background: #e8f2fe; color: var(--primary-dark); }
+.filters {
+background: #fff; padding: 14px; border-radius: 10px; border: 1px solid var(--border);
+display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; align-items: center;
+}
+select, input[type="date"], input[type="file"] {
+padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px;
+}
+.detail-layout { display: grid; grid-template-columns: 1.1fr 1fr; gap: 20px; }
+@media (max-width: 780px) { .detail-layout { grid-template-columns: 1fr; } }
+.main-photo {
+height: 250px; background: #dce9fa; border-radius: 10px;
+display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px;
+}
+.thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
+.thumb {
+padding: 10px 6px; background: #fff; border: 2px solid var(--border);
+border-radius: 8px; text-align: center; font-size: 12px; cursor: pointer; font-weight: 600;
+}
+.thumb.active { border-color: var(--primary); background: #e8f2fe; }
+table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; }
+th, td { padding: 10px 12px; border-bottom: 1px solid var(--border); text-align: left; font-size: 14px; }
+th { background: #f8fafd; color: var(--muted); width: 42%; }
+.modal-backdrop {
+position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55);
+display: none; align-items: center; justify-content: center; padding: 16px; z-index: 50;
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+background: #fff; border-radius: 12px; max-width: 480px; width: 100%;
+padding: 20px; box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+}
+.form-row { margin-bottom: 12px; }
+.form-row label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.form-row input[readonly] {
+width: 100%; padding: 9px 10px; background: #f1f5f9; border: 1px solid var(--border);
+border-radius: 8px; color: #334155; font-weight: 600;
+}
+.toast {
+position: fixed; bottom: 20px; right: 20px; background: #0f172a; color: #fff;
+padding: 12px 16px; border-radius: 10px; font-size: 13px; display: none; z-index: 60;
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="brand" onclick="showView('home')">حراج | Haraj Redesigned</div>
+<div class="search-wrap">
+<input id="searchInput" type="text" placeholder="Search cars, devices, real estate..." oninput="renderLists()" />
+<button class="btn btn-light" onclick="renderLists()">Search</button>
+</div>
+<div style="display:flex; gap:8px;">
+<button class="btn btn-light" onclick="showView('seller')">My Ads &amp; 1% Fee</button>
+</div>
+</header>
+
+<nav class="cat-bar">
+<button class="cat-btn active" id="nav-home" onclick="showView('home')">All Listings</button>
+<button class="cat-btn" id="nav-cars" onclick="showView('cars')">Cars (Dedicated)</button>
+<button class="cat-btn" onclick="filterHomeCategory('Real Estate')">Real Estate</button>
+<button class="cat-btn" onclick="filterHomeCategory('Devices')">Devices</button>
+<button class="cat-btn" onclick="filterHomeCategory('Services')">Services</button>
+<button class="btn btn-outline" onclick="toggleMore()">More ▾</button>
+</nav>
+
+<div class="more-panel" id="morePanel">
+<span style="font-size:13px; color:var(--muted); align-self:center;">Secondary Categories (FR-01):</span>
+<button class="btn btn-outline" onclick="filterHomeCategory('Furniture')">Furniture</button>
+<button class="btn btn-outline" onclick="filterHomeCategory('Animals')">Animals</button>
+<button class="btn btn-outline" onclick="filterHomeCategory('Fashion')">Fashion</button>
+<button class="btn btn-outline" onclick="filterHomeCategory('Jobs')">Jobs</button>
+</div>
+
+<div class="container">
+<!-- VIEW 1: HOMEPAGE -->
+<section id="view-home">
+<div class="banner">
+<strong>FR-01 &amp; NFR-01:</strong> Streamlined 5-item navigation bar with collapsible "More" menu and prominent search bar. Car brand logos removed from homepage to prevent cognitive overload.
+</div>
+<div class="grid" id="homeGrid"></div>
+</section>
+
+<!-- VIEW 2: DEDICATED CARS SECTION -->
+<section id="view-cars" style="display:none;">
+<div class="banner">
+<strong>FR-01 &amp; FR-02:</strong> Car brand shortcuts live exclusively inside the dedicated Cars section alongside dynamic filters (Year, Mileage, Price).
+</div>
+<div class="brands-row" id="brandChips"></div>
+<div class="filters">
+<select id="filterYear" onchange="renderLists()">
+<option value="all">All Years</option>
+<option value="2023">2023</option>
+<option value="2021">2021</option>
+<option value="2020">2020</option>
+</select>
+<select id="filterPrice" onchange="renderLists()">
+<option value="all">Any Price</option>
+<option value="80000">Under 80,000 SAR</option>
+<option value="100000">Under 100,000 SAR</option>
+</select>
+<button class="btn btn-outline" onclick="resetCarFilters()">Reset Filters</button>
+</div>
+<div class="grid" id="carsGrid"></div>
+</section>
+
+<!-- VIEW 3: VEHICLE LISTING DETAILS -->
+<section id="view-detail" style="display:none;">
+<button class="btn btn-outline" style="margin-bottom:12px;" onclick="showView('cars')">← Back to Cars</button>
+<div class="banner">
+<strong>FR-03 &amp; FR-04:</strong> Multi-photo gallery (exterior &amp; interior views) paired with a standardized specification table instead of free-text paragraphs.
+</div>
+<div class="detail-layout">
+<div>
+<div class="main-photo" id="mainPhotoLabel">Front Exterior View — Toyota Camry 2023</div>
+<div class="thumbs">
+<div class="thumb active" onclick="selectPhoto(this, 'Front Exterior View')">1. Front</div>
+<div class="thumb" onclick="selectPhoto(this, 'Rear &amp; Side Exterior View')">2. Side/Rear</div>
+<div class="thumb" onclick="selectPhoto(this, 'Interior Dashboard &amp; Seats')">3. Interior</div>
+<div class="thumb" onclick="selectPhoto(this, 'Odometer &amp; Engine Inspection')">4. Engine</div>
+</div>
+</div>
+<div>
+<h2 id="detailTitle" style="margin-top:0;">Toyota Camry 2023 GLX</h2>
+<table>
+<tr><th>Price</th><td id="detailPrice" style="font-weight:700; color:var(--primary);">85,000 SAR</td></tr>
+<tr><th>Manufacturing Year</th><td id="detailYear">2023</td></tr>
+<tr><th>Mileage</th><td id="detailMileage">45,000 km</td></tr>
+<tr><th>Fuel Type</th><td>Gasoline (91)</td></tr>
+<tr><th>Gearbox</th><td>Automatic</td></tr>
+<tr><th>Condition</th><td>Excellent — Accident-Free (Inspected)</td></tr>
+</table>
+<div style="display:flex; gap:10px; margin-top:14px;">
+<button class="btn btn-primary" style="flex:1;" onclick="toast('Chat opened with verified seller')">Contact Seller</button>
+<button class="btn btn-outline" style="flex:1;" onclick="toast('Offer submitted to seller')">Make an Offer</button>
+</div>
+</div>
+</div>
+</section>
+
+<!-- VIEW 4: SELLER ADS & AUTOMATED 1% FEE FLOW -->
+<section id="view-seller" style="display:none;">
+<div class="banner">
+<strong>FR-05 &amp; FR-06:</strong> Marking an ad as sold immediately calculates the 1% commission and opens a pre-filled payment form (reducing 9 manual fields down to 2 actions).
+</div>
+<div class="card" style="max-width:560px;">
+<div class="card-body">
+<div style="display:flex; justify-content:space-between; align-items:center;">
+<strong>Ford Taurus 2012 (Ad #2044722)</strong>
+<span class="tag" id="adStatusBadge">Status: Active</span>
+</div>
+<div class="price">Sale Price: 45,000 SAR</div>
+<p style="font-size:13px; color:var(--muted); margin:4px 0;">Location: Al-Hofuf • Seller: yara_alsubaie</p>
+<div style="display:flex; gap:10px; margin-top:8px;">
+<button class="btn btn-success" id="markSoldBtn" onclick="markAsSold()">Mark as Sold</button>
+<button class="btn btn-primary" id="openPayBtn" style="display:none;" onclick="openPaymentModal()">Pay 1% Fee (450 SAR)</button>
+</div>
+</div>
+</div>
+
+<!-- PRE-FILLED PAYMENT FORM -->
+<div class="card" id="paymentFormCard" style="max-width:560px; margin-top:16px; display:none;">
+<div class="card-body">
+<h3 style="margin:0 0 8px;">Simplified 1% Commission Form (Auto-Filled)</h3>
+<div class="form-row"><label>Username (Auto-filled)</label><input type="text" value="yara_alsubaie" readonly /></div>
+<div class="form-row"><label>Registered Mobile (Auto-filled)</label><input type="text" value="+966 50 123 4567" readonly /></div>
+<div class="form-row"><label>Ad Reference Number (Auto-filled)</label><input type="text" value="#2044722 — Ford Taurus 2012" readonly /></div>
+<div class="form-row"><label>Calculated 1% Fee (Auto-filled)</label><input type="text" value="450 SAR (1% of 45,000 SAR)" readonly /></div>
+<div class="form-row"><label>Transfer Date *</label><input type="date" id="transferDate" value="2026-11-22" /></div>
+<div class="form-row"><label>Upload Bank Transfer Receipt *</label><input type="file" id="receiptFile" /></div>
+<button class="btn btn-primary" onclick="submitPayment()">Confirm &amp; Submit Receipt</button>
+</div>
+</div>
+</section>
+</div>
+
+<!-- EVENT-DRIVEN 1% FEE MODAL -->
+<div class="modal-backdrop" id="feeModal">
+<div class="modal">
+<h3 style="margin-top:0;">Sold! 1% Commission Due</h3>
+<p style="font-size:14px; color:var(--muted);">Your item <strong>Ford Taurus 2012 (#2044722)</strong> was marked as sold.</p>
+<table>
+<tr><th>Final Sale Price</th><td>45,000 SAR</td></tr>
+<tr><th>Commission Rate</th><td>1%</td></tr>
+<tr><th>Amount Due</th><td style="font-weight:700; color:var(--primary);">450 SAR</td></tr>
+</table>
+<div style="display:flex; gap:10px; margin-top:16px;">
+<button class="btn btn-primary" style="flex:1;" onclick="openPaymentModal()">Pay Now (450 SAR)</button>
+<button class="btn btn-outline" onclick="closeFeeModal()">Pay Later</button>
+</div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const listings = [
+{ id: 1, title: "Toyota Camry 2023 GLX", category: "Cars", brand: "Toyota", year: "2023", price: 85000, mileage: "45,000 km", city: "Riyadh", cond: "Inspected" },
+{ id: 2, title: "Ford Taurus 2021 Limited", category: "Cars", brand: "Ford", year: "2021", price: 74000, mileage: "68,000 km", city: "Jeddah", cond: "Verified" },
+{ id: 3, title: "Nissan Patrol 2020 Platinum", category: "Cars", brand: "Nissan", year: "2020", price: 135000, mileage: "92,000 km", city: "Dammam", cond: "Inspected" },
+{ id: 4, title: "iPhone 15 Pro Max 256GB", category: "Devices", brand: "", year: "2024", price: 3400, mileage: "Battery 98%", city: "Riyadh", cond: "Like New" },
+{ id: 5, title: "Apartment for Rent — Al Malqa", category: "Real Estate", brand: "", year: "2025", price: 48000, mileage: "3 Bedrooms", city: "Riyadh", cond: "Annual" },
+{ id: 6, title: "Home AC Maintenance Service", category: "Services", brand: "", year: "2026", price: 150, mileage: "Same-Day", city: "Riyadh", cond: "Verified" }
+];
+
+let selectedCategory = "All";
+let selectedBrand = "All";
+
+function showView(view) {
+["home", "cars", "detail", "seller"].forEach(v => {
+document.getElementById("view-" + v).style.display = (v === view) ? "block" : "none";
+});
+document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
+const navBtn = document.getElementById("nav-" + view);
+if (navBtn) navBtn.classList.add("active");
+if (view === "home") selectedCategory = "All";
+renderLists();
+}
+
+function toggleMore() {
+document.getElementById("morePanel").classList.toggle("open");
+}
+
+function filterHomeCategory(cat) {
+showView("home");
+selectedCategory = cat;
+document.getElementById("morePanel").classList.remove("open");
+renderLists();
+toast("Filtered by " + cat);
+}
+
+function renderBrands() {
+const brands = ["All", "Toyota", "Ford", "Nissan"];
+document.getElementById("brandChips").innerHTML = brands.map(b =>
+`<button class="brand-chip ${selectedBrand === b ? "active" : ""}" onclick="selectBrand('${b}')">${b}</button>`
+).join("");
+}
+
+function selectBrand(b) {
+selectedBrand = b;
+renderBrands();
+renderLists();
+}
+
+function resetCarFilters() {
+selectedBrand = "All";
+document.getElementById("filterYear").value = "all";
+document.getElementById("filterPrice").value = "all";
+renderBrands();
+renderLists();
+}
+
+function openDetail(id) {
+const item = listings.find(x => x.id === id) || listings[0];
+document.getElementById("detailTitle").textContent = item.title;
+document.getElementById("detailPrice").textContent = item.price.toLocaleString() + " SAR";
+document.getElementById("detailYear").textContent = item.year;
+document.getElementById("detailMileage").textContent = item.mileage;
+document.getElementById("mainPhotoLabel").textContent = "Front Exterior View — " + item.title;
+showView("detail");
+}
+
+function selectPhoto(el, label) {
+document.querySelectorAll(".thumb").forEach(t => t.classList.remove("active"));
+el.classList.add("active");
+const title = document.getElementById("detailTitle").textContent;
+document.getElementById("mainPhotoLabel").textContent = label + " — " + title;
+}
+
+function renderLists() {
+const q = document.getElementById("searchInput").value.toLowerCase();
+const homeItems = listings.filter(item =>
+(selectedCategory === "All" || item.category === selectedCategory) &&
+item.title.toLowerCase().includes(q)
+);
+document.getElementById("homeGrid").innerHTML = homeItems.map(cardHTML).join("");
+
+const yearVal = document.getElementById("filterYear").value;
+const priceVal = document.getElementById("filterPrice").value;
+const carItems = listings.filter(item =>
+item.category === "Cars" &&
+(selectedBrand === "All" || item.brand === selectedBrand) &&
+(yearVal === "all" || item.year === yearVal) &&
+(priceVal === "all" || item.price <= Number(priceVal)) &&
+item.title.toLowerCase().includes(q)
+);
+document.getElementById("carsGrid").innerHTML = carItems.map(cardHTML).join("");
+}
+
+function cardHTML(item) {
+const action = item.category === "Cars"
+? `<button class="btn btn-primary" onclick="openDetail(${item.id})">View Specs &amp; Photos</button>`
+: `<button class="btn btn-outline" onclick="toast('Opened listing: ${item.title}')">View Listing</button>`;
+return `
+<div class="card">
+<div class="card-img">${item.category} • ${item.cond}</div>
+<div class="card-body">
+<strong>${item.title}</strong>
+<div class="price">${item.price.toLocaleString()} SAR</div>
+<div class="tags">
+<span class="tag">${item.city}</span>
+<span class="tag">${item.mileage}</span>
+<span class="tag">${item.year}</span>
+</div>
+${action}
+</div>
+</div>`;
+}
+
+function markAsSold() {
+document.getElementById("adStatusBadge").textContent = "Status: Sold (1% Fee Pending)";
+document.getElementById("markSoldBtn").style.display = "none";
+document.getElementById("openPayBtn").style.display = "inline-block";
+document.getElementById("feeModal").classList.add("open");
+}
+
+function closeFeeModal() {
+document.getElementById("feeModal").classList.remove("open");
+}
+
+function openPaymentModal() {
+closeFeeModal();
+document.getElementById("paymentFormCard").style.display = "block";
+toast("Account & ad details auto-filled (FR-06)");
+}
+
+function submitPayment() {
+const date = document.getElementById("transferDate").value;
+const file = document.getElementById("receiptFile").files.length;
+if (!date || !file) {
+toast("Validation (NFR-03): Please choose a transfer date and upload a receipt image.");
+return;
+}
+document.getElementById("adStatusBadge").textContent = "Status: Sold • Fee Receipt Submitted";
+document.getElementById("openPayBtn").style.display = "none";
+document.getElementById("paymentFormCard").style.display = "none";
+toast("Receipt received! Payment status updated immediately (NFR-05).");
+}
+
+function toast(msg) {
+const t = document.getElementById("toast");
+t.textContent = msg;
+t.style.display = "block";
+clearTimeout(window._t);
+window._t = setTimeout(() => { t.style.display = "none"; }, 3000);
+}
+
+renderBrands();
+renderLists();
+</script>
+</body>
+</html>
