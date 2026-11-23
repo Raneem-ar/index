@@ -58,10 +58,17 @@ padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; font-size: 13px;
 .card {
 background: var(--card); border: 1px solid var(--border); border-radius: 12px;
 overflow: hidden; display: flex; flex-direction: column;
+box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
 }
-.card-img {
-height: 150px; background: linear-gradient(135deg, #d7e6f9, #eef4fc);
-display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--primary-dark);
+.card-img-wrap {
+position: relative; height: 165px; background: #e2e8f0; overflow: hidden;
+}
+.card-img-wrap img {
+width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.card-badge {
+position: absolute; top: 10px; left: 10px; background: rgba(15, 23, 42, 0.78);
+color: #fff; font-size: 11px; font-weight: 600; padding: 4px 8px; border-radius: 6px;
 }
 .card-body { padding: 14px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
 .price { font-size: 17px; font-weight: 700; color: var(--primary); }
@@ -82,16 +89,25 @@ padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; font-siz
 }
 .detail-layout { display: grid; grid-template-columns: 1.1fr 1fr; gap: 20px; }
 @media (max-width: 780px) { .detail-layout { grid-template-columns: 1fr; } }
-.main-photo {
-height: 250px; background: #dce9fa; border-radius: 10px;
-display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px;
+.main-photo-box {
+position: relative; height: 270px; background: #dce9fa; border-radius: 10px; overflow: hidden;
+border: 1px solid var(--border);
+}
+.main-photo-box img {
+width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.photo-caption {
+position: absolute; bottom: 0; inset-x: 0; background: rgba(15, 23, 42, 0.72);
+color: #fff; padding: 8px 12px; font-size: 13px; font-weight: 600;
 }
 .thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
 .thumb {
-padding: 10px 6px; background: #fff; border: 2px solid var(--border);
-border-radius: 8px; text-align: center; font-size: 12px; cursor: pointer; font-weight: 600;
+background: #fff; border: 2px solid var(--border); border-radius: 8px;
+overflow: hidden; cursor: pointer; text-align: center; font-size: 11px; font-weight: 600;
 }
-.thumb.active { border-color: var(--primary); background: #e8f2fe; }
+.thumb img { width: 100%; height: 48px; object-fit: cover; display: block; }
+.thumb span { display: block; padding: 4px; }
+.thumb.active { border-color: var(--primary); background: #e8f2fe; color: var(--primary-dark); }
 table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; }
 th, td { padding: 10px 12px; border-bottom: 1px solid var(--border); text-align: left; font-size: 14px; }
 th { background: #f8fafd; color: var(--muted); width: 42%; }
@@ -183,13 +199,11 @@ padding: 12px 16px; border-radius: 10px; font-size: 13px; display: none; z-index
 </div>
 <div class="detail-layout">
 <div>
-<div class="main-photo" id="mainPhotoLabel">Front Exterior View — Toyota Camry 2023</div>
-<div class="thumbs">
-<div class="thumb active" onclick="selectPhoto(this, 'Front Exterior View')">1. Front</div>
-<div class="thumb" onclick="selectPhoto(this, 'Rear &amp; Side Exterior View')">2. Side/Rear</div>
-<div class="thumb" onclick="selectPhoto(this, 'Interior Dashboard &amp; Seats')">3. Interior</div>
-<div class="thumb" onclick="selectPhoto(this, 'Odometer &amp; Engine Inspection')">4. Engine</div>
+<div class="main-photo-box">
+<img id="mainPhotoImg" src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=900&q=80" alt="Vehicle View" />
+<div class="photo-caption" id="mainPhotoLabel">Front Exterior View — Toyota Camry 2023 GLX</div>
 </div>
+<div class="thumbs" id="detailThumbs"></div>
 </div>
 <div>
 <h2 id="detailTitle" style="margin-top:0;">Toyota Camry 2023 GLX</h2>
@@ -214,11 +228,12 @@ padding: 12px 16px; border-radius: 10px; font-size: 13px; display: none; z-index
 <strong>FR-05 &amp; FR-06:</strong> Marking an ad as sold immediately calculates the 1% commission and opens a pre-filled payment form (reducing 9 manual fields down to 2 actions).
 </div>
 <div class="card" style="max-width:560px;">
-<div class="card-body">
-<div style="display:flex; justify-content:space-between; align-items:center;">
-<strong>Ford Taurus 2012 (Ad #2044722)</strong>
-<span class="tag" id="adStatusBadge">Status: Active</span>
+<div class="card-img-wrap">
+<img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80" alt="Ford Taurus" />
+<span class="card-badge" id="adStatusBadge">Status: Active</span>
 </div>
+<div class="card-body">
+<strong>Ford Taurus 2012 (Ad #2044722)</strong>
 <div class="price">Sale Price: 45,000 SAR</div>
 <p style="font-size:13px; color:var(--muted); margin:4px 0;">Location: Al-Hofuf • Seller: yara_alsubaie</p>
 <div style="display:flex; gap:10px; margin-top:8px;">
@@ -235,7 +250,7 @@ padding: 12px 16px; border-radius: 10px; font-size: 13px; display: none; z-index
 <div class="form-row"><label>Registered Mobile (Auto-filled)</label><input type="text" value="+966 50 123 4567" readonly /></div>
 <div class="form-row"><label>Ad Reference Number (Auto-filled)</label><input type="text" value="#2044722 — Ford Taurus 2012" readonly /></div>
 <div class="form-row"><label>Calculated 1% Fee (Auto-filled)</label><input type="text" value="450 SAR (1% of 45,000 SAR)" readonly /></div>
-<div class="form-row"><label>Transfer Date *</label><input type="date" id="transferDate" value="2026-11-22" /></div>
+<div class="form-row"><label>Transfer Date *</label><input type="date" id="transferDate" value="2026-11-23" /></div>
 <div class="form-row"><label>Upload Bank Transfer Receipt *</label><input type="file" id="receiptFile" /></div>
 <button class="btn btn-primary" onclick="submitPayment()">Confirm &amp; Submit Receipt</button>
 </div>
@@ -263,12 +278,96 @@ padding: 12px 16px; border-radius: 10px; font-size: 13px; display: none; z-index
 
 <script>
 const listings = [
-{ id: 1, title: "Toyota Camry 2023 GLX", category: "Cars", brand: "Toyota", year: "2023", price: 85000, mileage: "45,000 km", city: "Riyadh", cond: "Inspected" },
-{ id: 2, title: "Ford Taurus 2021 Limited", category: "Cars", brand: "Ford", year: "2021", price: 74000, mileage: "68,000 km", city: "Jeddah", cond: "Verified" },
-{ id: 3, title: "Nissan Patrol 2020 Platinum", category: "Cars", brand: "Nissan", year: "2020", price: 135000, mileage: "92,000 km", city: "Dammam", cond: "Inspected" },
-{ id: 4, title: "iPhone 15 Pro Max 256GB", category: "Devices", brand: "", year: "2024", price: 3400, mileage: "Battery 98%", city: "Riyadh", cond: "Like New" },
-{ id: 5, title: "Apartment for Rent — Al Malqa", category: "Real Estate", brand: "", year: "2025", price: 48000, mileage: "3 Bedrooms", city: "Riyadh", cond: "Annual" },
-{ id: 6, title: "Home AC Maintenance Service", category: "Services", brand: "", year: "2026", price: 150, mileage: "Same-Day", city: "Riyadh", cond: "Verified" }
+{
+id: 1,
+title: "Toyota Camry 2023 GLX",
+category: "Cars",
+brand: "Toyota",
+year: "2023",
+price: 85000,
+mileage: "45,000 km",
+city: "Riyadh",
+cond: "Inspected",
+img: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=800&q=80",
+gallery: [
+{ label: "Front Exterior View", short: "1. Front", url: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=900&q=80" },
+{ label: "Side & Rear Exterior View", short: "2. Side/Rear", url: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=900&q=80" },
+{ label: "Interior Dashboard & Seats", short: "3. Interior", url: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80" },
+{ label: "Engine & Inspection Bay", short: "4. Engine", url: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=900&q=80" }
+]
+},
+{
+id: 2,
+title: "Ford Taurus 2021 Limited",
+category: "Cars",
+brand: "Ford",
+year: "2021",
+price: 74000,
+mileage: "68,000 km",
+city: "Jeddah",
+cond: "Verified",
+img: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80",
+gallery: [
+{ label: "Front Exterior View", short: "1. Front", url: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=900&q=80" },
+{ label: "Side & Rear Exterior View", short: "2. Side/Rear", url: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=900&q=80" },
+{ label: "Interior Cabin & Console", short: "3. Interior", url: "https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=900&q=80" },
+{ label: "Engine & Inspection Bay", short: "4. Engine", url: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=900&q=80" }
+]
+},
+{
+id: 3,
+title: "Nissan Patrol 2020 Platinum",
+category: "Cars",
+brand: "Nissan",
+year: "2020",
+price: 135000,
+mileage: "92,000 km",
+city: "Dammam",
+cond: "Inspected",
+img: "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=800&q=80",
+gallery: [
+{ label: "Front Exterior View", short: "1. Front", url: "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=900&q=80" },
+{ label: "Side & Rear Exterior View", short: "2. Side/Rear", url: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=900&q=80" },
+{ label: "Leather Interior & Seats", short: "3. Interior", url: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80" },
+{ label: "Engine & Inspection Bay", short: "4. Engine", url: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=900&q=80" }
+]
+},
+{
+id: 4,
+title: "iPhone 15 Pro Max 256GB",
+category: "Devices",
+brand: "",
+year: "2024",
+price: 3400,
+mileage: "Battery 98%",
+city: "Riyadh",
+cond: "Like New",
+img: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=800&q=80"
+},
+{
+id: 5,
+title: "Apartment for Rent — Al Malqa",
+category: "Real Estate",
+brand: "",
+year: "2025",
+price: 48000,
+mileage: "3 Bedrooms",
+city: "Riyadh",
+cond: "Annual",
+img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80"
+},
+{
+id: 6,
+title: "Home AC Maintenance Service",
+category: "Services",
+brand: "",
+year: "2026",
+price: 150,
+mileage: "Same-Day",
+city: "Riyadh",
+cond: "Verified",
+img: "https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=800&q=80"
+}
 ];
 
 let selectedCategory = "All";
@@ -324,14 +423,25 @@ document.getElementById("detailTitle").textContent = item.title;
 document.getElementById("detailPrice").textContent = item.price.toLocaleString() + " SAR";
 document.getElementById("detailYear").textContent = item.year;
 document.getElementById("detailMileage").textContent = item.mileage;
-document.getElementById("mainPhotoLabel").textContent = "Front Exterior View — " + item.title;
+const firstPhoto = item.gallery[0];
+document.getElementById("mainPhotoImg").src = firstPhoto.url;
+document.getElementById("mainPhotoLabel").textContent = firstPhoto.label + " — " + item.title;
+
+document.getElementById("detailThumbs").innerHTML = item.gallery.map((g, idx) => `
+<div class="thumb ${idx === 0 ? "active" : ""}" onclick="selectPhoto(this, '${g.label}', '${g.url}')">
+<img src="${g.url}" alt="${g.short}" />
+<span>${g.short}</span>
+</div>
+`).join("");
+
 showView("detail");
 }
 
-function selectPhoto(el, label) {
+function selectPhoto(el, label, url) {
 document.querySelectorAll(".thumb").forEach(t => t.classList.remove("active"));
 el.classList.add("active");
 const title = document.getElementById("detailTitle").textContent;
+document.getElementById("mainPhotoImg").src = url;
 document.getElementById("mainPhotoLabel").textContent = label + " — " + title;
 }
 
@@ -343,11 +453,7 @@ item.title.toLowerCase().includes(q)
 );
 document.getElementById("homeGrid").innerHTML = homeItems.map(cardHTML).join("");
 
-const homeItems = listings.filter(item =>
-(selectedCategory === "All" || item.category === selectedCategory) &&
-item.title.toLowerCase().includes(q)
-);
-document.getElementById("homeGrid").innerHTML = homeItems.map(cardHTML).join("");const yearVal = document.getElementById("filterYear").value;
+const yearVal = document.getElementById("filterYear").value;
 const priceVal = document.getElementById("filterPrice").value;
 const carItems = listings.filter(item =>
 item.category === "Cars" &&
@@ -365,7 +471,10 @@ const action = item.category === "Cars"
 : `<button class="btn btn-outline" onclick="toast('Opened listing: ${item.title}')">View Listing</button>`;
 return `
 <div class="card">
-<div class="card-img">${item.category} • ${item.cond}</div>
+<div class="card-img-wrap">
+<img src="${item.img}" alt="${item.title}" />
+<span class="card-badge">${item.category} • ${item.cond}</span>
+</div>
 <div class="card-body">
 <strong>${item.title}</strong>
 <div class="price">${item.price.toLocaleString()} SAR</div>
