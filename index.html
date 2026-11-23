@@ -61,7 +61,7 @@ overflow: hidden; display: flex; flex-direction: column;
 box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
 }
 .card-img-wrap {
-position: relative; height: 165px; background: #e2e8f0; overflow: hidden;
+position: relative; height: 170px; background: #e9eff6; overflow: hidden;
 }
 .card-img-wrap img {
 width: 100%; height: 100%; object-fit: cover; display: block;
@@ -97,7 +97,7 @@ border: 1px solid var(--border);
 width: 100%; height: 100%; object-fit: cover; display: block;
 }
 .photo-caption {
-position: absolute; bottom: 0; inset-x: 0; background: rgba(15, 23, 42, 0.72);
+position: absolute; bottom: 0; inset-x: 0; background: rgba(15, 23, 42, 0.75);
 color: #fff; padding: 8px 12px; font-size: 13px; font-weight: 600;
 }
 .thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
@@ -105,7 +105,7 @@ color: #fff; padding: 8px 12px; font-size: 13px; font-weight: 600;
 background: #fff; border: 2px solid var(--border); border-radius: 8px;
 overflow: hidden; cursor: pointer; text-align: center; font-size: 11px; font-weight: 600;
 }
-.thumb img { width: 100%; height: 48px; object-fit: cover; display: block; }
+.thumb img { width: 100%; height: 50px; object-fit: cover; display: block; }
 .thumb span { display: block; padding: 4px; }
 .thumb.active { border-color: var(--primary); background: #e8f2fe; color: var(--primary-dark); }
 table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; }
@@ -195,13 +195,13 @@ padding: 12px 16px; border-radius: 10px; font-size: 13px; display: none; z-index
 <section id="view-detail" style="display:none;">
 <button class="btn btn-outline" style="margin-bottom:12px;" onclick="showView('cars')">← Back to Cars</button>
 <div class="banner">
-<strong>FR-03 &amp; FR-04:</strong> Multi-photo gallery (exterior &amp; interior views) paired with a standardized specification table instead of free-text paragraphs.
+<strong>FR-03 &amp; FR-04:</strong> Multi-photo gallery (front, side, interior, and engine views) paired with a standardized specification table.
 </div>
 <div class="detail-layout">
 <div>
 <div class="main-photo-box">
-<img id="mainPhotoImg" src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=900&q=80" alt="Vehicle View" />
-<div class="photo-caption" id="mainPhotoLabel">Front Exterior View — Toyota Camry 2023 GLX</div>
+<img id="mainPhotoImg" src="images/camry-front.png" alt="Vehicle View" />
+<div class="photo-caption" id="mainPhotoLabel">Front View — Toyota Camry 2023 GLX</div>
 </div>
 <div class="thumbs" id="detailThumbs"></div>
 </div>
@@ -229,7 +229,7 @@ padding: 12px 16px; border-radius: 10px; font-size: 13px; display: none; z-index
 </div>
 <div class="card" style="max-width:560px;">
 <div class="card-img-wrap">
-<img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80" alt="Ford Taurus" />
+<img src="images/taurus-front.png" alt="Ford Taurus" />
 <span class="card-badge" id="adStatusBadge">Status: Active</span>
 </div>
 <div class="card-body">
@@ -288,12 +288,12 @@ price: 85000,
 mileage: "45,000 km",
 city: "Riyadh",
 cond: "Inspected",
-img: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=800&q=80",
+img: "images/camry-front.png",
 gallery: [
-{ label: "Front Exterior View", short: "1. Front", url: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=900&q=80" },
-{ label: "Side & Rear Exterior View", short: "2. Side/Rear", url: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=900&q=80" },
-{ label: "Interior Dashboard & Seats", short: "3. Interior", url: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80" },
-{ label: "Engine & Inspection Bay", short: "4. Engine", url: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=900&q=80" }
+{ label: "Front View", short: "1. Front", url: "images/camry-front.png" },
+{ label: "Side View", short: "2. Side", url: "images/camry-side.png" },
+{ label: "Interior View", short: "3. Interior", url: "images/camry-interior.png" },
+{ label: "Engine View", short: "4. Engine", url: "images/camry-engine.png" }
 ]
 },
 {
@@ -306,12 +306,12 @@ price: 74000,
 mileage: "68,000 km",
 city: "Jeddah",
 cond: "Verified",
-img: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80",
+img: "images/taurus-front.png",
 gallery: [
-{ label: "Front Exterior View", short: "1. Front", url: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=900&q=80" },
-{ label: "Side & Rear Exterior View", short: "2. Side/Rear", url: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=900&q=80" },
-{ label: "Interior Cabin & Console", short: "3. Interior", url: "https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=900&q=80" },
-{ label: "Engine & Inspection Bay", short: "4. Engine", url: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=900&q=80" }
+{ label: "Front View", short: "1. Front", url: "images/taurus-front.png" },
+{ label: "Side View", short: "2. Side", url: "images/taurus-side.png" },
+{ label: "Interior View", short: "3. Interior", url: "images/taurus-interior.png" },
+{ label: "Engine View", short: "4. Engine", url: "images/taurus-engine.png" }
 ]
 },
 {
@@ -324,12 +324,12 @@ price: 135000,
 mileage: "92,000 km",
 city: "Dammam",
 cond: "Inspected",
-img: "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=800&q=80",
+img: "images/patrol-front.png",
 gallery: [
-{ label: "Front Exterior View", short: "1. Front", url: "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=900&q=80" },
-{ label: "Side & Rear Exterior View", short: "2. Side/Rear", url: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=900&q=80" },
-{ label: "Leather Interior & Seats", short: "3. Interior", url: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80" },
-{ label: "Engine & Inspection Bay", short: "4. Engine", url: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=900&q=80" }
+{ label: "Front View", short: "1. Front", url: "images/patrol-front.png" },
+{ label: "Side View", short: "2. Side", url: "images/patrol-side.png" },
+{ label: "Interior View", short: "3. Interior", url: "images/patrol-interior.png" },
+{ label: "Engine View", short: "4. Engine", url: "images/patrol-engine.png" }
 ]
 },
 {
@@ -342,7 +342,7 @@ price: 3400,
 mileage: "Battery 98%",
 city: "Riyadh",
 cond: "Like New",
-img: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=800&q=80"
+img: "images/iphone-15-pro-max.png"
 },
 {
 id: 5,
@@ -354,7 +354,7 @@ price: 48000,
 mileage: "3 Bedrooms",
 city: "Riyadh",
 cond: "Annual",
-img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80"
+img: "images/apartment-malqa.png"
 },
 {
 id: 6,
@@ -366,7 +366,55 @@ price: 150,
 mileage: "Same-Day",
 city: "Riyadh",
 cond: "Verified",
-img: "https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=800&q=80"
+img: "images/ac-service.png"
+},
+{
+id: 7,
+title: "Modern Living Room Sofa Set",
+category: "Furniture",
+brand: "",
+year: "2025",
+price: 4200,
+mileage: "3-Seater + Armchair",
+city: "Riyadh",
+cond: "New",
+img: "images/furniture.png"
+},
+{
+id: 8,
+title: "Purebred Arabian Horse",
+category: "Animals",
+brand: "",
+year: "2022",
+price: 28000,
+mileage: "Vaccinated & Registered",
+city: "Diriyah",
+cond: "Healthy",
+img: "images/animals.png"
+},
+{
+id: 9,
+title: "Tailored Linen Abaya & Jacket Set",
+category: "Fashion",
+brand: "",
+year: "2026",
+price: 450,
+mileage: "Size M",
+city: "Riyadh",
+cond: "New with Tags",
+img: "images/fashion.png"
+},
+{
+id: 10,
+title: "Junior IT Support Specialist Role",
+category: "Jobs",
+brand: "",
+year: "2026",
+price: 7500,
+mileage: "Full-Time • Monthly",
+city: "Riyadh",
+cond: "Hiring Now",
+img: "images/jobs.png"
 }
 ];
 
