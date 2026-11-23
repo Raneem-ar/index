@@ -343,7 +343,11 @@ item.title.toLowerCase().includes(q)
 );
 document.getElementById("homeGrid").innerHTML = homeItems.map(cardHTML).join("");
 
-const yearVal = document.getElementById("filterYear").value;
+const homeItems = listings.filter(item =>
+(selectedCategory === "All" || item.category === selectedCategory) &&
+item.title.toLowerCase().includes(q)
+);
+document.getElementById("homeGrid").innerHTML = homeItems.map(cardHTML).join("");const yearVal = document.getElementById("filterYear").value;
 const priceVal = document.getElementById("filterPrice").value;
 const carItems = listings.filter(item =>
 item.category === "Cars" &&
